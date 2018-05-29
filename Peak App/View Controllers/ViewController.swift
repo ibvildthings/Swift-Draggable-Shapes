@@ -16,37 +16,22 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     
     @IBOutlet weak var canvasView: UIView!
     
-    
+    // Shape buttons
     @IBOutlet weak var squareButton: UIButton!
     @IBOutlet weak var circleButton: UIButton!
     @IBOutlet weak var triangleButton: UIButton!
     
     
-    // MARK: Shape Types
-    enum Shape: String {
-        case square = "☐"
-        case circle = " ⃝"
-        case triangle = "△"
-    }
+    
     
     
     // MARK: Properties
     // Used to undo
     var historyView: UIView?
     
+    // Used to keep count of shapes
+    var shapeCount: [Shape : Int] = [:]
     
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        
-        
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
     
     // MARK: Creating Shapes
@@ -68,9 +53,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     func createShape(ofType shape: Shape) {
         print("Created a shape of type: " + shape.rawValue)
         
-        
-        
-        // Save move to the history
+        // Save move to the history before making any changes
         historyView = canvasView.copyView()
         
         // Create a textview
@@ -98,6 +81,16 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         
         // Add the object to the view
         canvasView.addSubview(label)
+        
+        // Increment counter
+        if let count = shapeCount[shape] {
+            shapeCount[shape] = count + 1
+        }
+        else {
+            shapeCount[shape] = 1
+        }
+        
+        print(shapeCount[shape])
         
     }
     
@@ -147,22 +140,20 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     // MARK: Navigation
-    @IBAction func statsPage(_ sender: Any) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         print("Displaying stats.")
-        
+
+        if segue.destination is StatsTableViewController {
+            let vc = segue.destination as? StatsTableViewController
+            // Pass the shape counts to the next viewcontroller
+            vc?.shapeCount = self.shapeCount
+        }
     }
 
+    
+    
 }
 
 
 
 
-
-//MARK: - UIView Extensions
-// Used to create a copy of the view
-extension UIView
-{
-    func copyView<T: UIView>() -> T {
-        return NSKeyedUnarchiver.unarchiveObject(with: NSKeyedArchiver.archivedData(withRootObject: self)) as! T
-    }
-}

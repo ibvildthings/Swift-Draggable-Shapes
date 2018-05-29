@@ -8,6 +8,9 @@
 
 import Foundation
 
-struct ShapeModel {
-    
+// MARK: Shape Types
+enum Shape: String {
+    case square = "☐"
+    case circle = " ⃝"
+    case triangle = "△"
 }
