@@ -32,9 +32,8 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: Properties
     // Used to undo
-    var historyView = UIView()
+    var historyView: UIView?
     
-    // Used to drag objects
     
     
     override func viewDidLoad() {
@@ -69,6 +68,11 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     func createShape(ofType shape: Shape) {
         print("Created a shape of type: " + shape.rawValue)
         
+        
+        
+        // Save move to the history
+        historyView = canvasView.copyView()
+        
         // Create a textview
         let label = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
         
@@ -94,29 +98,41 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         
         // Add the object to the view
         canvasView.addSubview(label)
+        
     }
     
     
     // Pangesture recognizer
     @IBAction func handlePan(recognizer:UIPanGestureRecognizer) {
+        
+        // Save move to history
+        if recognizer.state == UIGestureRecognizerState.began {
+            historyView = canvasView.copyView()
+        }
+        
+        // Logic to handle dragging
         let translation = recognizer.translation(in: self.view)
         if let view = recognizer.view {
             view.center = CGPoint(x:view.center.x + translation.x,
                                   y:view.center.y + translation.y)
         }
         recognizer.setTranslation(CGPoint.zero, in: self.view)
+        
     }
 
     
     
     // MARK: Undo
     @IBAction func undoAction(_ sender: Any) {
+        // Proceed if history isn't nil
+        guard let historyView = historyView else { return }
         
-        print("Undoing last action.")
+        // Delete all the child subviews
         for child in canvasView.subviews {
             child.removeFromSuperview()
         }
         
+        // Add subviews from history
         for child in historyView.subviews {
             canvasView.addSubview(child)
             
@@ -126,15 +142,15 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
             child.addGestureRecognizer(panRecognizer)
         }
         
+        // Set historyView to nil to prevent further undos
+        self.historyView = nil
     }
     
     // MARK: Navigation
     @IBAction func statsPage(_ sender: Any) {
         print("Displaying stats.")
         
-        historyView = canvasView.copyView()
     }
-    
 
 }
 
@@ -143,7 +159,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
 
 
 //MARK: - UIView Extensions
-
+// Used to create a copy of the view
 extension UIView
 {
     func copyView<T: UIView>() -> T {
