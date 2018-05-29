@@ -60,11 +60,11 @@
 		7BD713B820BBBFD500513C85 /* Peak App */ = {
 			isa = PBXGroup;
 			children = (
-				7BD713B920BBBFD500513C85 /* AppDelegate.swift */,
 				7BD713CF20BD3A6800513C85 /* Utilities.swift */,
 				7BD713CB20BBE0F500513C85 /* Shapes.swift */,
 				7BD713D120BD3A9200513C85 /* View Controllers */,
 				7BD713BD20BBBFD500513C85 /* Main.storyboard */,
+				7BD713B920BBBFD500513C85 /* AppDelegate.swift */,
 				7BD713C020BBBFD700513C85 /* Assets.xcassets */,
 				7BD713C220BBBFD700513C85 /* LaunchScreen.storyboard */,
 				7BD713C520BBBFD700513C85 /* Info.plist */,

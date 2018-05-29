@@ -19,8 +19,36 @@ extension UIView
 
 
 
-//MARK: - UILabel Extensions
+//MARK: - Custom UILabel
 // Used to create a custom UILabel with the proper fonts and other properties set
-extension UILabel {
+class myShape: UILabel {
+    
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder:aDecoder)
+        self.setup()
+    }
+    
+    override init(frame:CGRect) {
+        super.init(frame:frame)
+        self.setup()
+    }
+    
+    override  func awakeFromNib() {
+        super.awakeFromNib()
+        self.setup()
+    }
+    
+    
+    func setup() {
+        // Set the font, alignment, color and size of the object
+        self.textAlignment = .center
+        self.textColor = UIColor.white
+        self.font = UIFont(name: "Helvetica", size: 80)
+        
+        // Enable panning
+        self.isUserInteractionEnabled = true
+    }
+    
     
 }

@@ -112,7 +112,6 @@
                                     <color key="titleColor" red="0.17077735066413879" green="0.30895513296127319" blue="0.37797331809997559" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="statsPage:" destination="BYZ-38-t0r" eventType="touchUpInside" id="3vk-C0-kNj"/>
                                     <segue destination="SBn-Zp-e4I" kind="show" identifier="showStats" id="vV5-mL-zpF"/>
                                 </connections>
                             </button>
@@ -120,11 +119,6 @@
                     </navigationItem>
                     <connections>
                         <outlet property="canvasView" destination="Bfu-Es-tv3" id="Jfj-vf-fFB"/>
-                        <outlet property="circleButton" destination="QUO-53-a6O" id="I5v-ZQ-oY2"/>
-                        <outlet property="squareButton" destination="1qH-OG-qwK" id="0bS-yk-YUf"/>
-                        <outlet property="statsButton" destination="rSb-s5-0h8" id="21W-OQ-mEd"/>
-                        <outlet property="triangleButton" destination="XCW-WO-Eoq" id="uqU-ap-Q8m"/>
-                        <outlet property="undoButton" destination="elh-AQ-UlQ" id="V3w-m5-dsm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

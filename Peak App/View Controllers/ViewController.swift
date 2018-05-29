@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  Peak App
 //
-//  Created by Pritesh Desai on 5/27/18.
+//  Created by Pritesh Desai on 5/29/18.
 //  Copyright © 2018 Little Maxima LLC. All rights reserved.
 //
 
@@ -11,22 +11,10 @@ import UIKit
 class ViewController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: Outlets
-    @IBOutlet weak var undoButton: UIButton!
-    @IBOutlet weak var statsButton: UIButton!
-    
     @IBOutlet weak var canvasView: UIView!
-    
-    // Shape buttons
-    @IBOutlet weak var squareButton: UIButton!
-    @IBOutlet weak var circleButton: UIButton!
-    @IBOutlet weak var triangleButton: UIButton!
-    
-    
-    
-    
-    
+
     // MARK: Properties
-    // Used to undo
+    // Used to undo actions
     var historyView: UIView?
     
     // Used to keep count of shapes
@@ -49,6 +37,8 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         createShape(ofType: .triangle)
     }
     
+    
+    
     // Generic shape creating function
     func createShape(ofType shape: Shape) {
         print("Created a shape of type: " + shape.rawValue)
@@ -56,32 +46,30 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         // Save move to the history before making any changes
         historyView = canvasView.copyView()
         
-        // Create a textview
-        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+        // Create an object
+        let object = myShape(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
         
         // Randomize the point where the shapes are generated
         let randomX = CGFloat(arc4random_uniform(150))
         let randomY = CGFloat(arc4random_uniform(200))
         
-        label.center = CGPoint(x: self.view.frame.width / 2 + randomX, y: 300 + randomY)
+        object.center = CGPoint(x: self.view.frame.width / 2 + randomX, y: 300 + randomY)
         
-        // Set the font, shape, color and size of the object
-        label.textAlignment = .center
-        label.text = shape.rawValue
-        label.textColor = UIColor.white
-        label.font = UIFont(name: "Helvetica", size: 80)
-        
-        // Enable panning
-        label.isUserInteractionEnabled = true
-        
+        object.text = shape.rawValue
+
         // Create and attach a pan gesture
         let panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan(recognizer:)))
         panRecognizer.delegate = self
-        label.addGestureRecognizer(panRecognizer)
+        object.addGestureRecognizer(panRecognizer)
         
-        // Add the object to the view
-        canvasView.addSubview(label)
+        // Add the object to the view and increment the count
+        canvasView.addSubview(object)
+        incrementCount(for: shape)
         
+    }
+    
+    // Count incrementer
+    func incrementCount(for shape: Shape) {
         // Increment counter
         if let count = shapeCount[shape] {
             shapeCount[shape] = count + 1
@@ -89,9 +77,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         else {
             shapeCount[shape] = 1
         }
-        
-        print(shapeCount[shape])
-        
     }
     
     
@@ -138,6 +123,9 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         // Set historyView to nil to prevent further undos
         self.historyView = nil
     }
+    
+    
+    
     
     // MARK: Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
